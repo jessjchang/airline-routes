@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import data from './data';
+import data, { getAirlineById, getAirportByCode } from './data';
 
 const App = () => (
   <div className="app">
@@ -11,17 +11,17 @@ const App = () => (
     <table>
       <thead>
         <tr>
-          <th>airline</th>
-          <th>src</th>
-          <th>dest</th>
+          <th>Airline</th>
+          <th>Source Airport</th>
+          <th>Destination Airport</th>
         </tr>
       </thead>
       <tbody>
         {data.routes.map(route => (
           <tr key={route.airline+route.src+route.dest}>
-            <td>{route.airline}</td>
-            <td>{route.src}</td>
-            <td>{route.dest}</td>
+            <td>{getAirlineById(route.airline)}</td>
+            <td>{getAirportByCode(route.src)}</td>
+            <td>{getAirportByCode(route.dest)}</td>
           </tr>
         ))}
       </tbody>
