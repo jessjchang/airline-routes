@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Table = ({className, columns, rows, format, perPage=25}) => {
   const [page, setPage] = useState(1);
 
   const startingIndex = perPage * (page - 1);
+
+  useEffect(() => {
+    setPage(1);
+  }, [rows]);
 
   const tableHeaderCells = columns.map(column => (
     <th key={column.name}>{column.name}</th>
