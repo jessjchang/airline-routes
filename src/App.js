@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 import './App.css';
 import data, { getAirlineById, getAirportByCode } from './data';
 import Table from './components/Table';
+import Select from './components/Select';
 
 const App = () => {
   const [airline, setAirline] = useState('all');
-  const airlineId = airline === 'all' ?
-    'all' :
-    data.airlines.find(({name}) => name === airline)['id'];
 
   const columns = [
     {name: 'Airline', property: 'airline'},
@@ -23,30 +21,20 @@ const App = () => {
     }
   };
 
-  const handleAirlineSelect = (event) => {
-    event.preventDefault();
-    if (event.target.value === 'all') {
-      setAirline('all');
-    } else {
-      setAirline(event.target.value);
+  const handleAirlineSelect = (value) => {
+    if (value !== 'all') {
+      value = Number(value);
     }
-  };
 
-  const airlineOptions = () => {
-    let allAirlines = data.airlines.map(airline => (
-      <option key={airline.name} value={airline.name}>
-        {airline.name}
-      </option>
-    ));
-
-    allAirlines
-      .unshift(<option key='all' value='all'>All Airlines</option>);
-
-    return allAirlines;
+    setAirline(value);
   };
 
   const filteredRoutes = data.routes.filter(route => {
-    return airline === 'all' || airlineId === route.airline;
+    return airline === 'all' || airline === route.airline;
+  });
+
+  const filteredAirlines = data.airlines.filter(airline => {
+    return data.airlines;
   });
 
   return (
@@ -57,9 +45,14 @@ const App = () => {
       <section>
         <p>
           Show routes on
-          <select value={airline} onChange={handleAirlineSelect}>
-            {airlineOptions()}
-          </select>
+          <Select
+            options={filteredAirlines}
+            valueKey='id'
+            titleKey='name'
+            allTitle='All Airlines'
+            value={airline}
+            onSelect={handleAirlineSelect}
+          />
         </p>
         <Table
           className="routes-table"
