@@ -13,22 +13,22 @@ const Select = ({
     onSelect(event.target.value);
   };
 
-  const airlineOptions = () => {
-    let allAirlines = options.map(airline => (
-      <option key={airline[valueKey]} value={airline[valueKey]}>
-        {airline[titleKey]}
+  const optionsDisplay = () => {
+    let allOptions = options.map(opt => (
+      <option key={opt[valueKey]} value={opt[valueKey]}>
+        {opt[titleKey]}
       </option>
     ));
 
-    allAirlines
+    allOptions
       .unshift(<option key='all' value='all'>{allTitle}</option>);
 
-    return allAirlines;
+    return allOptions;
   };
 
   return (
     <select value={value} onChange={handleChange}>
-      {airlineOptions()}
+      {optionsDisplay()}
     </select>
   )
 };

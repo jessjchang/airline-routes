@@ -42,6 +42,12 @@ const Table = ({className, columns, rows, format, perPage=25}) => {
       );
     });
 
+  const displayRange = (() => {
+    const starting = rows.length === 0 ? 0 : startingIndex + 1;
+    const ending = startingIndex + tableBodyRows.length
+    return {starting, ending};
+  })();
+
   return (
     <div>
       <table className={className}>
@@ -56,7 +62,7 @@ const Table = ({className, columns, rows, format, perPage=25}) => {
       </table>
       <div className="pagination">
         <p>
-          Showing {startingIndex + 1}-{startingIndex + tableBodyRows.length} of {rows.length} total routes.
+          Showing {displayRange.starting}-{displayRange.ending} of {rows.length} total routes.
         </p>
         <p>
           <button

@@ -6,6 +6,7 @@ import Select from './components/Select';
 
 const App = () => {
   const [airline, setAirline] = useState('all');
+  const [airport, setAirport] = useState('all');
 
   const columns = [
     {name: 'Airline', property: 'airline'},
@@ -29,12 +30,23 @@ const App = () => {
     setAirline(value);
   };
 
+  const handleAirportSelect = (value) => {
+    setAirport(value);
+  };
+
   const filteredRoutes = data.routes.filter(route => {
-    return airline === 'all' || airline === route.airline;
+    return (
+      (airline === 'all' || airline === route.airline) &&
+      (airport === 'all' || airport === route.src || airport === route.dest)
+    );
   });
 
   const filteredAirlines = data.airlines.filter(airline => {
-    return data.airlines;
+    return airline;
+  });
+
+  const filteredAirports = data.airports.filter(airport => {
+    return airport;
   });
 
   return (
@@ -52,6 +64,15 @@ const App = () => {
             allTitle='All Airlines'
             value={airline}
             onSelect={handleAirlineSelect}
+          />
+          flying in or out of
+          <Select
+            options={filteredAirports}
+            valueKey='code'
+            titleKey='name'
+            allTitle='All Airports'
+            value={airport}
+            onSelect={handleAirportSelect}
           />
         </p>
         <Table
