@@ -20,6 +20,8 @@ const Select = ({
       </option>
     ));
 
+    allOptions.sort((option1, option2) => option1.props.children.localeCompare(option2.props.children));
+
     allOptions
       .unshift(<option key='all' value='all'>{allTitle}</option>);
 
