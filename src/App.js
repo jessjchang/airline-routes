@@ -8,6 +8,8 @@ const App = () => {
   const [airline, setAirline] = useState('all');
   const [airport, setAirport] = useState('all');
 
+  const noFiltersSelected = airline === 'all' && airport === 'all';
+
   const columns = [
     {name: 'Airline', property: 'airline'},
     {name: 'Source Airport', property: 'src'},
@@ -33,6 +35,11 @@ const App = () => {
   const handleAirportSelect = (value) => {
     setAirport(value);
   };
+
+  const clearFilters = () => {
+    setAirline('all');
+    setAirport('all');
+  }
 
   const filteredRoutes = data.routes.filter(route => {
     return (
@@ -74,6 +81,9 @@ const App = () => {
             value={airport}
             onSelect={handleAirportSelect}
           />
+          <button onClick={clearFilters} disabled={noFiltersSelected}>
+            Clear Filters
+          </button>
         </p>
         <Table
           className="routes-table"
