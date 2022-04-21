@@ -6,7 +6,8 @@ const Select = ({
   titleKey,
   allTitle,
   value,
-  onSelect
+  onSelect,
+  enabledKey
 }) => {
   const handleChange = (event) => {
     event.preventDefault();
@@ -15,7 +16,11 @@ const Select = ({
 
   const optionsDisplay = () => {
     let allOptions = options.map(opt => (
-      <option key={opt[valueKey]} value={opt[valueKey]}>
+      <option
+        key={opt[valueKey]}
+        value={opt[valueKey]}
+        disabled={!enabledKey || !opt[enabledKey]}
+      >
         {opt[titleKey]}
       </option>
     ));

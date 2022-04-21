@@ -48,12 +48,20 @@ const App = () => {
     );
   });
 
-  const filteredAirlines = data.airlines.filter(airline => {
-    return airline;
+  const filteredAirlines = data.airlines.map(airline => {
+    const validMatch = filteredRoutes.some(route => {
+      return route.airline === airline.id;
+    });
+
+    return { ...airline, validMatch }
   });
 
-  const filteredAirports = data.airports.filter(airport => {
-    return airport;
+  const filteredAirports = data.airports.map(airport => {
+    const validMatch = filteredRoutes.some(route => {
+      return route.src === airport.code || route.dest === airport.code;
+    });
+
+    return { ...airport, validMatch }
   });
 
   return (
@@ -71,6 +79,7 @@ const App = () => {
             allTitle='All Airlines'
             value={airline}
             onSelect={handleAirlineSelect}
+            enabledKey='validMatch'
           />
           flying in or out of
           <Select
@@ -80,6 +89,7 @@ const App = () => {
             allTitle='All Airports'
             value={airport}
             onSelect={handleAirportSelect}
+            enabledKey='validMatch'
           />
           <button onClick={clearFilters} disabled={noFiltersSelected}>
             Clear Filters
