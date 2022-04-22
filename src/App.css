@@ -70,3 +70,8 @@ svg circle.source {
   fill: lightgreen;
   r: 0.5;
 }
+
+svg circle.general {
+  fill: white;
+  r: 0.5;
+}

@@ -1,7 +1,31 @@
 import React from 'react';
 import { getAirportByCode } from '../data';
 
-const Map = ({ routes=[] }) => {
+const Map = ({ airports=[], routes=[], onClick }) => {
+  const handleClick = (event) => {
+    event.preventDefault();
+    onClick(event.target.getAttribute('code'));
+  };
+
+  const airportsDisplay = airports.map(airport => {
+    const x = airport.long;
+    const y = airport.lat;
+
+    return (
+      <g key={airport.code}>
+        <circle
+          className="general"
+          cx={x}
+          cy={y}
+          code={airport.code}
+          onClick={handleClick}
+        >
+          <title>{airport.name}</title>
+        </circle>
+      </g>
+    );
+  });
+
   const routeDisplay = routes.map(route => {
     const srcAirport = getAirportByCode(route.src);
     const destAirport = getAirportByCode(route.dest);
@@ -12,10 +36,22 @@ const Map = ({ routes=[] }) => {
 
     return (
       <g key={Object.values(route).join('-')}>
-        <circle className="source" cx={x1} cy={y1}>
+        <circle
+          className="source"
+          cx={x1}
+          cy={y1}
+          code={route.src}
+          onClick={handleClick}
+        >
           <title>{srcAirport.name}</title>
         </circle>
-        <circle className="destination" cx={x2} cy={y2}>
+        <circle
+          className="destination"
+          cx={x2}
+          cy={y2}
+          code={route.dest}
+          onClick={handleClick}
+        >
           <title>{destAirport.name}</title>
         </circle>
         <path d={`M${x1} ${y1} L ${x2} ${y2}`} />
@@ -35,6 +71,7 @@ const Map = ({ routes=[] }) => {
           width="100%"
           transform="scale(1 -1)"
         />
+        {airportsDisplay}
         {routeDisplay}
       </g>
     </svg>

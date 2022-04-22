@@ -71,7 +71,11 @@ const App = () => {
         <h1 className="title">Airline Routes</h1>
       </header>
       <section>
-        <Map routes={filteredRoutes} />
+        <Map
+          airports={data.airports}
+          routes={filteredRoutes}
+          onClick={handleAirportSelect}
+        />
         <p>
           Show routes on
           <Select
