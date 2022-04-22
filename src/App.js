@@ -3,6 +3,7 @@ import './App.css';
 import data, { getAirlineById, getAirportByCode } from './data';
 import Table from './components/Table';
 import Select from './components/Select';
+import Map from './components/Map';
 
 const App = () => {
   const [airline, setAirline] = useState('all');
@@ -18,9 +19,9 @@ const App = () => {
 
   const formatValue = (property, value) => {
     if (property === 'airline') {
-      return getAirlineById(value);
+      return getAirlineById(value).name;
     } else {
-      return getAirportByCode(value);
+      return getAirportByCode(value).name;
     }
   };
 
@@ -70,6 +71,7 @@ const App = () => {
         <h1 className="title">Airline Routes</h1>
       </header>
       <section>
+        <Map routes={filteredRoutes} />
         <p>
           Show routes on
           <Select
