@@ -46,6 +46,10 @@ select {
   width: 90%;
 }
 
+.airportSort button {
+  margin: 0 0.5em;
+}
+
 .pagination button {
   margin: 0 0.5em;
 }

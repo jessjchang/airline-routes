@@ -8,8 +8,11 @@ import Map from './components/Map';
 const App = () => {
   const [airline, setAirline] = useState('all');
   const [airport, setAirport] = useState('all');
+  const [selectSort, setSelectSort] = useState('');
 
-  const noFiltersSelected = airline === 'all' && airport === 'all';
+  const noFiltersSelected = airline === 'all' &&
+    airport === 'all' &&
+    selectSort === '';
 
   const columns = [
     {name: 'Airline', property: 'airline'},
@@ -37,9 +40,18 @@ const App = () => {
     setAirport(value);
   };
 
+  const handleSortByName = () => {
+    setSelectSort('name');
+  };
+
+  const handleSortByRoutes = () => {
+    setSelectSort('routes');
+  };
+
   const clearFilters = () => {
     setAirline('all');
     setAirport('all');
+    setSelectSort('');
   }
 
   const filteredRoutes = data.routes.filter(route => {
@@ -57,13 +69,25 @@ const App = () => {
     return { ...airline, validMatch }
   });
 
-  const filteredAirports = data.airports.map(airport => {
-    const validMatch = filteredRoutes.some(route => {
-      return route.src === airport.code || route.dest === airport.code;
+  const filteredAirports = (() => {
+    const filtered = data.airports.map(airport => {
+      const matches = filteredRoutes.filter(route => {
+        return route.src === airport.code || route.dest === airport.code;
+      });
+
+      const validMatch = !!matches;
+
+      return { ...airport, validMatch, routeCount: matches.length };
     });
 
-    return { ...airport, validMatch }
-  });
+    if (selectSort === 'name') {
+      return filtered.sort((airport1, airport2) => airport1.name.localeCompare(airport2.name));
+    } else if (selectSort === 'routes') {
+      return filtered.sort((airport1, airport2) => airport2.routeCount - airport1.routeCount);
+    } else {
+      return filtered;
+    }
+  })();
 
   return (
     <div className="app">
@@ -76,6 +100,14 @@ const App = () => {
           routes={filteredRoutes}
           onClick={handleAirportSelect}
         />
+        <div className="airportSort">
+          <button onClick={handleSortByName}>
+            Sort airports by name
+          </button>
+          <button onClick={handleSortByRoutes}>
+            Sort airports by number of routes
+          </button>
+        </div>
         <p>
           Show routes on
           <Select
