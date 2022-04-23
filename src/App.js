@@ -75,7 +75,7 @@ const App = () => {
         return route.src === airport.code || route.dest === airport.code;
       });
 
-      const validMatch = !!matches;
+      const validMatch = matches.length > 0;
 
       return { ...airport, validMatch, routeCount: matches.length };
     });
