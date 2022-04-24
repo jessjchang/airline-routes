@@ -7,11 +7,20 @@ const Select = ({
   allTitle,
   value,
   onSelect,
-  enabledKey
+  enabledKey,
+  routeCountKey
 }) => {
   const handleChange = (event) => {
     event.preventDefault();
     onSelect(event.target.value);
+  };
+
+  const routeDisplay = (value) => {
+    if (value === 1) {
+      return `${value} route`;
+    } else {
+      return `${value} routes`;
+    }
   };
 
   const optionsDisplay = () => {
@@ -21,7 +30,7 @@ const Select = ({
         value={opt[valueKey]}
         disabled={!enabledKey || !opt[enabledKey]}
       >
-        {opt[titleKey]}
+        {opt[titleKey]} - {routeDisplay(opt[routeCountKey])}
       </option>
     ));
 

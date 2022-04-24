@@ -62,11 +62,13 @@ const App = () => {
   });
 
   const filteredAirlines = data.airlines.map(airline => {
-    const validMatch = filteredRoutes.some(route => {
+    const matches = filteredRoutes.filter(route => {
       return route.airline === airline.id;
     });
 
-    return { ...airline, validMatch }
+    const validMatch = matches.length > 0;
+
+    return { ...airline, validMatch, routeCount: matches.length };
   });
 
   const filteredAirports = (() => {
@@ -118,6 +120,7 @@ const App = () => {
             value={airline}
             onSelect={handleAirlineSelect}
             enabledKey='validMatch'
+            routeCountKey='routeCount'
           />
           flying in or out of
           <Select
@@ -128,6 +131,7 @@ const App = () => {
             value={airport}
             onSelect={handleAirportSelect}
             enabledKey='validMatch'
+            routeCountKey='routeCount'
           />
           <button onClick={clearFilters} disabled={noFiltersSelected}>
             Clear Filters
